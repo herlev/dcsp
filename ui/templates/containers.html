@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <link href="/assets/main.css" rel="stylesheet" />
+</head>
+<body class="p-5">
+  <div class="text-xl mb-3">Projects</div>
+  <div class="projects flex gap-5">
+    {% for project in projects %}
+      {% let state_color -%}
+      {% match project.state -%}
+        {% when ProjectState::AllUp -%}
+          {% let state_color = "bg-green-400" -%}
+        {% when ProjectState::AllDown -%}
+          {% let state_color = "bg-red-400" -%}
+        {% when ProjectState::SomeUp -%}
+          {% let state_color = "bg-yellow-400" -%}
+      {% endmatch -%}
+      <div class="project flex flex-col bg-gray-100 p-3 rounded-lg">
+        <div class="flex gap-3 items-center justify-between">
+          <div class="text-lg">{{project.name}}</div>
+          <div class="{{state_color}} w-4 h-4 rounded-full"></div>
+        </div>
+        {% for url in project.urls %}
+          <a href="{{url}}" class="text-teal-400">{{url}}</a>
+        {% endfor %}
+      </div>
+    {% endfor %}
+  </div>
+  </div>
+</body>
+</html>
