@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}Docker-compose projects{% endblock %}
+
+{% block body %}
+<div class="p-5">
+  <div class="text-xl mb-3">Projects</div>
+  <div class="projects flex gap-5" hx-get="/api/status" hx-trigger="every 5s">
+    {% include "api/status.html" %}
+  </div>
+</div>
+{% endblock %}

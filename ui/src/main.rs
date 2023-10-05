@@ -1,33 +1,26 @@
 use anyhow::Context;
-use askama::Template;
-use axum::{
-  http::StatusCode,
-  response::{Html, IntoResponse, Response},
-  routing::get,
-  Router,
-};
-use docker_compose::ProjectState;
-use docker_compose::{self, Project};
-use serde::Deserialize;
+use axum::{routing::get, Router};
 use std::str::FromStr;
 use tower_http::services::ServeDir;
 use tower_livereload::LiveReloadLayer;
-
 use tracing::info;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
+
+mod routes;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
   tracing_subscriber::registry()
-    .with(
-      tracing_subscriber::EnvFilter::try_from_default_env().unwrap_or_else(|_| "with_axum_htmx_askama=debug".into()),
-    )
+    .with(tracing_subscriber::EnvFilter::try_from_default_env().unwrap_or_else(|_| "ui=debug".into()))
     .with(tracing_subscriber::fmt::layer())
     .init();
   info!("initializing router...");
   let assets_path = std::env::current_dir().unwrap();
+  let api_router = Router::new().route("/status", get(routes::api_status));
+
   let router = Router::new()
-    .route("/", get(hello))
+    .nest("/api", api_router)
+    .route("/", get(routes::status))
     .nest_service(
       "/assets",
       ServeDir::new(format!("{}/assets", assets_path.to_str().unwrap())),
@@ -39,17 +32,6 @@ async fn main() -> anyhow::Result<()> {
     .await
     .context("error while starting server")?;
   Ok(())
-}
-
-async fn hello() -> ProjectsTemplate {
-  let docker = docker_compose::Docker::connect_with_local_defaults().unwrap();
-  let p = docker_compose::get_compose_projects(&docker).await;
-  let template = ProjectsTemplate { projects: p };
-  template
-}
-
-#[derive(Template, Deserialize, Debug)]
-#[template(path = "containers.html")]
-struct ProjectsTemplate {
-  projects: Vec<Project>,
+  // add docker connection to the with_state thing
+  // add htmx to local assets
 }

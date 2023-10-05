@@ -18,3 +18,6 @@ docker-compose = { path = "../docker-compose" }
 askama_axum = "0.3.0"
 serde = "1.0.188"
 tower-livereload = "0.8.1"
+
+# [profile.dev.package.askama_derive]
+# opt-level = 3
