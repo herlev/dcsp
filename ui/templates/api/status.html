@@ -8,13 +8,13 @@
     {% when ProjectState::SomeUp -%}
       {% let state_color = "bg-yellow-400" -%}
   {% endmatch -%}
-  <div class="project flex flex-col bg-gray-100 p-4 rounded-lg">
+  <div class="project flex flex-col bg-gray-100 p-4 rounded-lg border-solid border-2 border-gray-300">
     <div class="flex gap-5 items-center justify-between">
       <div class="text-lg">{{project.name}}</div>
       <div class="{{state_color}} w-4 h-4 rounded-full"></div>
     </div>
     {% for url in project.urls %}
-      <a href="{{url}}" class="text-teal-400">{{url}}</a>
+      <a href="{{url}}" class="text-sky-400">{{url}}</a>
     {% endfor %}
   </div>
 {% endfor %}

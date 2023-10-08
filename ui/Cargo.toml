@@ -11,13 +11,15 @@ askama = { version = "0.12.1", features = ["with-axum"] }
 axum = "0.6.20"
 tokio = { version = "1.32.0", features = ["full"] }
 tower = "0.4.13"
-tower-http = { version = "0.4.4", features = ["fs"] }
+tower-http = { version = "0.4.4", features = ["fs", "trace"] }
 tracing = "0.1.37"
 tracing-subscriber = { version = "0.3.17", features = ["env-filter"] }
 docker-compose = { path = "../docker-compose" }
 askama_axum = "0.3.0"
 serde = "1.0.188"
 tower-livereload = "0.8.1"
+rust-embed = "8.0.0"
+mime_guess = "2.0.4"
 
 # [profile.dev.package.askama_derive]
 # opt-level = 3
