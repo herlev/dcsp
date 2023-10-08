@@ -1,6 +1,6 @@
 use serde::Deserialize;
 use std::collections::HashMap;
-use std::fmt::{write, Display};
+use std::fmt::Display;
 
 use bollard::container::ListContainersOptions;
 use bollard::service::ContainerSummary;
@@ -49,7 +49,7 @@ async fn get_compose_containers(docker: &Docker) -> Vec<ContainerSummary> {
     .unwrap()
 }
 
-fn get_urls(containers: &Vec<ContainerSummary>) -> Vec<String> {
+fn get_urls(containers: &[ContainerSummary]) -> Vec<String> {
   containers
     .iter()
     .filter_map(|c| c.labels.as_ref().unwrap().get("caddy"))

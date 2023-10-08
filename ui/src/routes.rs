@@ -6,15 +6,13 @@ use serde::Deserialize;
 pub async fn status() -> StatusTemplate {
   let docker = docker_compose::Docker::connect_with_local_defaults().unwrap();
   let p = docker_compose::get_compose_projects(&docker).await;
-  let template = StatusTemplate { projects: p };
-  template
+  StatusTemplate { projects: p }
 }
 
 pub async fn api_status() -> ApiStatusTemplate {
   let docker = docker_compose::Docker::connect_with_local_defaults().unwrap();
   let p = docker_compose::get_compose_projects(&docker).await;
-  let template = ApiStatusTemplate { projects: p };
-  template
+  ApiStatusTemplate { projects: p }
 }
 
 #[derive(Template, Deserialize, Debug)]
